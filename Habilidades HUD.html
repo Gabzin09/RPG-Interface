@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Deck de Habilidades</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css">
+  <style>
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'VT323', monospace;
+}
+body {
+      background-color: #00000000;
+      color: #ffffff;
+      font-family: 'VT323', monospace;
+      padding-top: 40px;
+      padding-bottom: 40px;
+      min-height: 100vh;
+      user-select: none;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+}
+
+/* Painel principal */
+.painel {
+      background: #0000008b;
+      border: 1px solid #ffffff;
+      padding-left: 25px;
+      padding-right: 25px;
+      padding-bottom: 25px;
+      width: 1250px;
+      height: 900px;
+}
+
+/* Título com estilo HUD */
+.titulo-hud {
+      background: #0000009f;
+      border-bottom: 1px solid #ffffff;
+      color: #ffffff;
+      font-family: 'VT323', monospace;
+      font-size: 50px;
+      text-align: center;
+      text-transform: uppercase;
+      padding: 10px;
+      margin-bottom: 15px;
+      user-select: none;
+}
+
+/* Formulário HUD */
+.hud-form {
+  background: #0000009f;
+  padding: 25px;
+  border: 1px solid #ffffff44;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.hud-form .form-bloco {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.hud-form input,
+.hud-form textarea {
+  flex: 1;
+  padding: 10px;
+  font-size: 25px;
+  background: #0000009f;
+  border: 1px solid #ffffff77;
+  color: #ffffff;
+  transition: border 0.3s;
+  overflow: auto;
+  resize: none;
+}
+.hud-form input:focus,
+.hud-form textarea:focus {
+  border-color: #ffffff;
+  outline: none;
+}
+.btn-adicionar {
+  padding: 15px;
+  font-size: 25px;
+  background: #000000cb;
+  color: #ffffff;
+  font-weight: bold;
+  border: none;
+  border: 1px solid #ffffff77;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.btn-adicionar:hover {
+  background: #0000009f;
+  transform: scale(1.03);
+  border: 1px solid #ffffff;
+}
+
+/* Área de cartas em deck horizontal */
+.cartas-linha {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px;
+  scroll-behavior: smooth;
+  border-top: 1px solid #ffffff33;
+  border-bottom: 1px solid #ffffff33;
+}
+.cartas-linha::-webkit-scrollbar {
+  height: 20px;
+  cursor: pointer;
+  border-radius: 50px;
+}
+.cartas-linha::-webkit-scrollbar-thumb {
+  background: #9b9b9b88;
+  cursor: pointer;
+  border-radius: 50px;
+}
+
+.cartas-linha::-webkit-scrollbar-thumb:hover {
+  background: #54545488;
+}
+
+/* Cartas HUD */
+.card-habilidade {
+  background: #000000cb;
+  border: 1px solid #ffffff77;
+  border-radius: 5px;
+  width: 250px;
+  height: 350px;
+  padding: 12px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+.card-habilidade:hover {
+  transform: scale(1.06);
+}
+.card-habilidade img {
+  width: 100%;
+  max-height: 150px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  background: transparent;
+  border: 1px solid #ffffff99;
+}
+.card-habilidade h3 {
+  font-size: 25px;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+.card-habilidade p {
+  font-size: 20px;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 6px;
+}
+.card-habilidade small {
+  font-size: 20px;
+  color: #afafaf;
+}
+
+/* Botão de remover */
+.remove-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #ff0000;
+  color: #ffffff;
+  border: 1px solid #e00000;
+  font-size: 20px;
+  padding: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 35px;
+  height: 37px;
+  display: block;
+  justify-content: center;
+  align-items: center;
+}
+.remove-btn:hover {
+  background: #e00000;
+  color: #d0d0d0;
+  border-color: #c00000;
+}
+  </style>
+</head>
+<body>
+  <div class="painel">
+    <h1 class="titulo-hud">HABILIDADES</h1>
+
+    <form id="formHabilidade" class="hud-form">
+      <div class="form-bloco">
+        <input type="text" id="skillName" placeholder="Nome" required />
+        <input type="text" id="skillTipo" placeholder="Tipo (ex: Magia)" />
+      </div>
+      <textarea id="skillDesc" placeholder="Descrição" rows="2" required></textarea>
+      <div class="form-bloco">
+        <input type="text" id="skillCusto" placeholder="Custo (ex: 10 MP)" />
+        <input type="file" id="skillImage" accept="image/*" />
+      </div>
+      <button type="submit" class="btn-adicionar">Adicionar</button>
+    </form>
+
+    <div id="areaCartas" class="cartas-linha">
+      <!-- Cartas inseridas via JS -->
+    </div>
+  </div>
+
+  <script>
+// Utilitários de armazenamento
+function carregarHabilidades() {
+  try {
+    return JSON.parse(localStorage.getItem("habilidades")) || [];
+  } catch {
+    return [];
+  }
+}
+function salvarHabilidades(lista) {
+  localStorage.setItem("habilidades", JSON.stringify(lista));
+}
+
+// Converte imagem para base64
+function lerImagem(file) {
+  return new Promise((resolve) => {
+    if (!file) return resolve(null);
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => resolve(null);
+    reader.readAsDataURL(file);
+  });
+}
+
+// Cria carta visual
+function criarCarta(hab, index) {
+  const card = document.createElement("div");
+  card.className = "card-habilidade";
+
+  if (hab.imagem) {
+    const img = document.createElement("img");
+    img.src = hab.imagem;
+    img.alt = hab.nome;
+    card.appendChild(img);
+  }
+
+  const titulo = document.createElement("h3");
+  titulo.textContent = hab.nome;
+  card.appendChild(titulo);
+
+  const desc = document.createElement("p");
+  desc.textContent = hab.descricao;
+  card.appendChild(desc);
+
+  const extra = document.createElement("small");
+  extra.innerHTML = `<strong>${hab.tipo || "?"}</strong> | <em>${hab.custo || "?"}</em>`;
+  card.appendChild(extra);
+
+  const remover = document.createElement("button");
+  remover.className = "remove-btn";
+  remover.textContent = "✕";
+  remover.title = "Remover";
+  remover.onclick = () => removerHabilidade(index);
+  card.appendChild(remover);
+
+  return card;
+}
+
+// Renderiza todas as cartas
+function renderizarCartas() {
+  const lista = document.getElementById("areaCartas");
+  lista.innerHTML = "";
+
+  const habilidades = carregarHabilidades();
+  habilidades.forEach((hab, i) => {
+    const card = criarCarta(hab, i);
+    lista.appendChild(card);
+  });
+}
+
+// Remove habilidade
+function removerHabilidade(index) {
+  const lista = carregarHabilidades();
+  lista.splice(index, 1);
+  salvarHabilidades(lista);
+  renderizarCartas();
+}
+
+// Evento de envio do formulário
+document.getElementById("formHabilidade").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const nome = document.getElementById("skillName").value.trim();
+  const desc = document.getElementById("skillDesc").value.trim();
+  const tipo = document.getElementById("skillTipo").value.trim();
+  const custo = document.getElementById("skillCusto").value.trim();
+  const file = document.getElementById("skillImage").files[0];
+
+  if (!nome || !desc) {
+    alert("Preencha o nome e a descrição da habilidade.");
+    return;
+  }
+
+  const imagem = await lerImagem(file);
+
+  const nova = { nome, descricao: desc, tipo, custo, imagem };
+  const habilidades = carregarHabilidades();
+  habilidades.push(nova);
+  salvarHabilidades(habilidades);
+  renderizarCartas();
+
+  e.target.reset();
+});
+
+// Inicializar
+window.addEventListener("DOMContentLoaded", renderizarCartas);
+  </script>
+</body>
+</html>

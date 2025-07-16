@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <title>Ficha de Personagem</title>
+  <link rel="stylesheet" href="CARDs/Card1.css">
+  <link rel="stylesheet" href="CARDs/Card2.css">
+  <link rel="stylesheet" href="CARDs/Card3.css">
+  <link rel="stylesheet" href="CARDs/Card4.css">
+  <link rel="stylesheet" href="CARDs/Card5.css">
+  <link rel="stylesheet" href="CARDs/Card6.css">
+  <link rel="stylesheet" href="CARDs/Card7.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #00000000;
+      color: #ffffff;
+      font-family: 'VT323', monospace;
+      padding-top: 40px;
+      padding-bottom: 40px;
+      min-height: 100vh;
+      user-select: none;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    h2 {
+      background: #0000009f;
+      border-bottom: 1px solid #ffffff;
+      color: #ffffff;
+      font-family: 'VT323', monospace;
+      font-size: 30px;
+      text-align: center;
+      text-transform: uppercase;
+      padding: 10px;
+      margin-bottom: 15px;
+      user-select: none;
+    }
+
+    .pagina {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .layout {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      width: 100%;
+      align-items: flex-start; 
+      justify-content: space-evenly;
+    }
+
+    .layout2 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      width: 100%;
+      align-items: flex-start;
+      justify-content: space-evenly;
+      background: #0000008b;
+      padding-bottom: 40px;
+      margin: 25px;
+    }
+
+    .divisao {
+      background: #0000009f;
+      width: 100%;
+      height: 75px;
+      font-size: 45px;
+      font-family: 'VT323', monospace;
+      text-align: center;
+      border-radius: 5px;
+      padding-top: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+      border-bottom: 1px groove #ffffff;
+    }
+
+   .label2 label {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 12px;
+      font-size: 25px;
+      color: #ffffff;
+    }
+
+    .label2 label span {
+      margin-bottom: 4px;
+      font-size: 35px;
+      font-weight: bold;
+      padding-top: 10px;
+      color: #ffffff;
+      flex: 1;
+    }
+
+    .label2 label textarea {
+      background: #0000008b;
+      border: 1px solid #ffffff44;
+      color: #ffffff;
+      font-size: 25px;
+      padding: 6px 6px;
+      resize: none;
+      overflow: hidden;
+      width: 100%;
+      font-family: 'VT323', monospace;
+      border-bottom: 1px solid #ffffff;
+    }
+
+    .section label input[type="number"] {
+      height: 35px;
+    }
+
+    .label2 label textarea:focus {
+      outline: 1px solid #ffffff;
+      background-color: #000000ba;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .profile-photo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 25px;
+      width: 100%;
+    }
+
+    .profile-photo img {
+      max-width: 350px;
+      max-height: 350px;
+      object-fit: contain;
+      cursor: pointer;
+      border-radius: 5px;
+      border: 1px solid #ffffff;
+      background-color: #0000004d;
+    }
+
+    .profile-photo img:hover {
+      background-color: #0000009b;
+    }
+
+    #tooltip {
+      position: absolute;
+      background: #000000d0;
+      color: #ffffff;
+      padding: 10px 14px;
+      font-family: 'VT323', monospace;
+      pointer-events: none;
+      z-index: 9999;
+      display: none;
+      border-radius: 5px;
+      border: 1px solid #ffffff;
+      width: 500px;
+    }
+
+    #tooltip strong {
+      font-weight: bold;
+      color: #ffffff;
+      font-size: 26px;
+      text-transform: uppercase;
+      }
+
+    #tooltip .desc {
+      margin-top: 4px;
+      line-height: 1.1;
+      font-size: 25px;
+    }
+  </style>
+</head>
+<body>
+<div class="pagina">
+  <div class="profile-photo">
+    <label for="uploadPhoto">
+      <img id="profileImage" src="IMGs/Iperfil.png" alt="Clique para trocar a imagem" />
+      <input type="file" id="uploadPhoto" accept="image/*" />
+    </label>
+  </div>
+
+  <div class="layout">
+    <div class="card1">
+      <h2>Informações Básicas</h2>
+      <div class="section1">
+        <label data-desc="Como o personagem é chamado."><span>Nome:</span> <textarea placeholder="Digite aqui">Genma Shimura</textarea></label>
+        <label data-desc="Tempo de vida do personagem até o momento da história."><span>Idade:</span> <textarea placeholder="Digite aqui">21 Anos</textarea></label>
+        <label data-desc="Identidade biológica ou sexo do personagem."><span>Gênero:</span> <textarea placeholder="Digite aqui">Masculino</textarea></label>
+        <label data-desc="Pronomes que o personagem prefere."><span>Pronome:</span> <textarea placeholder="Digite aqui">Ele/Dele</textarea></label>
+        <label data-desc="Espécie ou linhagem do personagem."><span>Raça:</span> <textarea placeholder="Digite aqui">Humano</textarea></label>
+        <label data-desc="Altura do personagem."><span>Altura:</span> <textarea placeholder="Digite aqui">1,87 Metros</textarea></label>
+        <label data-desc="Peso corporal aproximado."><span>Peso:</span> <textarea placeholder="Digite aqui">87 Kg</textarea></label>
+        <label data-desc="Data ou época de nascimento."><span>Nascimento:</span> <textarea placeholder="Digite aqui">19/08</textarea></label>
+      </div>
+    </div>
+
+    <div class="card2">
+      <h2>Histórico e Contexto</h2>
+      <div class="section2">
+        <label data-desc="Nome honorífico ou título."><span>Título:</span> <textarea placeholder="Digite aqui">"The god of speed"</textarea></label>
+        <label data-desc="Nome informal ou apelido."><span>Apelido:</span> <textarea placeholder="Digite aqui">Gen</textarea></label>
+        <label data-desc="Lugar de origem."><span>Origem:</span> <textarea placeholder="Digite aqui">Whiterun</textarea></label>
+        <label data-desc="Classe social."><span>Classe social:</span> <textarea placeholder="Digite aqui">Nobre</textarea></label>
+        <label data-desc="Profissão anterior."><span>Profissão:</span> <textarea placeholder="Digite aqui">Caçador de Recompensas</textarea></label>
+      </div>
+      <div class="label2">
+        <label data-desc="Laços familiares."><span>Família:</span> <textarea placeholder="Digite aqui">Maria Shimura (irmã); Pedro Shimura (pai); </textarea></label>
+        <label data-desc="Conexões relevantes."><span>Vínculos:</span> <textarea placeholder="Digite aqui">Satorou Gojo; Uchiha Sasuke; Son Goku;</textarea></label>
+        <label data-desc="Histórico prévio."><span>Passado:</span> <textarea placeholder="Digite aqui">Era uma vez um bebe que nasceu durante uma guerra... antes de seus pais morrerem eles selaram uma besta de caudas...</textarea></label>
+      </div>
+    </div>
+
+    <div class="card3">
+      <h2>Status e Função no Jogo</h2>
+      <div class="section3">
+        <label data-desc="Função principal no jogo."><span>Classe:</span> <textarea placeholder="Digite aqui">Assassino</textarea></label>
+        <label data-desc="Especialização dentro da classe."><span>Subclasse:</span> <textarea placeholder="Digite aqui">Mago</textarea></label>
+        <label data-desc="Nível de prestígio ou hierarquia."><span>Rank:</span> <textarea placeholder="Digite aqui">SSS+</textarea></label>
+        <label data-desc="Experiência atual."><span>Nível:</span> <textarea placeholder="Digite aqui">100</textarea></label>
+        <label data-desc="Grupo, ordem ou guilda."><span>Facção:</span> <textarea placeholder="Digite aqui">Anbu</textarea></label>
+        <label data-desc="Papel tático no grupo."><span>Função:</span> <textarea placeholder="Digite aqui">DPS</textarea></label>
+        <label data-desc="Energia usada nas habilidades."><span>Recurso:</span> <textarea placeholder="Digite aqui">Stamina e Mana</textarea></label>
+      </div>
+    </div>
+
+    <div class="layout2">
+
+      <div class="divisao">
+        <label>Mais Informações:</label>
+      </div>
+
+      <div class="card4">
+        <h2>Conhecimento</h2>
+        <div class="section4"></div>
+        <div class="label2">
+          <label data-desc="Línguas que o personagem sabe."><span>Idiomas:</span> <textarea>Português</textarea></label>
+          <label data-desc="Talento natural ou habilidade especial."><span>Talentos:</span> <textarea>Cantar</textarea></label>
+          <label data-desc="Domínio de uma habilidade."><span>Maestrias:</span> <textarea>Tocar Violão</textarea></label>
+        </div>
+      </div>
+
+      <div class="card5">
+        <h2>Identidade e Personalidade</h2>
+        <div class="section5"></div>
+        <div class="label2">
+          <label data-desc="Conduta moral e ética."><span>Alinhamento:</span> <textarea>Neutro</textarea></label>
+          <label data-desc="Objetivos pessoais."><span>Objetivos:</span> <textarea>Ser o mais rápido</textarea></label>
+          <label data-desc="Bordões ou frases."><span>Frases:</span> <textarea>"Quem quebra as regras é um lixo, mas quem abandona os amigos é pior que lixo"</textarea></label>
+          <label data-desc="Manias ou hábitos estranhos."><span>Manias:</span> <textarea>Ele pega as flores que ele acha bonita</textarea></label>
+          <label data-desc="Crenças ou visão de mundo."><span>Filosofia:</span> <textarea>"Usar a força pra salvar os fracos</textarea></label>
+          <label data-desc="Fobias ou ansiedades."><span>Medos:</span> <textarea>Tem medo de aranhas</textarea></label>
+          <label data-desc="Fraquezas e vícios."><span>Defeitos:</span> <textarea>Pouca resistência física</textarea></label>
+          <label data-desc="Pontos fortes e valores."><span>Virtudes:</span> <textarea>Alta quantia de mana</textarea></label>
+          <label data-desc="Traços marcantes de comportamento."><span>Personalidade:</span> <textarea>Explosivo (se irrita fácil)</textarea></label>
+        </div>
+      </div>
+
+      <div class="card6">
+        <h2>Extras</h2>
+        <div class="section6"></div>
+        <div class="label2">
+          <label data-desc="Objeto simbólico ou especial."><span>Símbolo:</span> <textarea>Órion (espada)</textarea></label>
+          <label data-desc="Mascotes ou aliados."><span>Companheiros:</span> <textarea>(Toddynho) Dragão</textarea></label>
+          <label data-desc="Laços amorosos ou afetivos."><span>Relacionamentos:</span> <textarea>Nenhum</textarea></label>
+          <label data-desc="Segredos ou identidade falsa."><span>Segredos:</span> <textarea>Nenhum</textarea></label>
+          <label data-desc="Notas e observações extras."><span>Notas:</span> <textarea>Nenhum</textarea></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="layout3">
+      <div class="divisao">
+        <label>História:</label>
+      </div>
+
+      <div class="card7">
+        <h2></h2>
+        <div class="section7"></div>
+        <div class="label2">
+          <label data-desc="História do personagem."><span>História:</span>
+            <textarea>
+Genma Shimura nasceu em Veritas, uma cidade consagrada aos deuses da luz e da justiça. Desde criança, foi treinado pelos clérigos da Ordem do Sol Nascente, destinado a se tornar um paladino da luz, um guardião do bem. Com fé inabalável, ele acreditava que todo mal podia ser destruído com a força da justiça.
+
+Aos 19 anos, Genma foi enviado em sua primeira missão real: proteger uma vila atacada por saqueadores. Mas ao chegar, descobriu que os agressores não eram bandidos — eram camponeses famintos, expulsos de suas terras por ordens da própria igreja. Quando Genma se recusou a executar os sobreviventes, foi acusado de traição e excomungado.
+
+Rejeitado pela ordem e visto como traidor, Genma vagou pelo mundo como renegado. Jogou fora seu escudo com o brasão da luz e passou a empunhar uma espada negra, símbolo da justiça que não pertence a nenhum deus.
+
+Hoje, ele caminha entre a sombra e a luz. Ainda ajuda os inocentes, mas seus métodos são duros. Genma aprendeu que o bem nem sempre vem dos céus — às vezes, é preciso lutar na lama para salvar os fracos.
+            </textarea>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tooltip"></div>
+</div>
+
+<script>
+  const uploadInput = document.getElementById('uploadPhoto');
+  const profileImage = document.getElementById('profileImage');
+
+  if (uploadInput && profileImage) {
+    uploadInput.addEventListener('change', function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          profileImage.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  const tooltip = document.getElementById("tooltip");
+
+  function showTooltip(desc, campo, e) {
+    if (!desc || !tooltip) return;
+    tooltip.style.display = "block";
+    tooltip.innerHTML = `<strong>${campo}</strong><hr><div class="desc">${desc}</div>`;
+    moveTooltip(e);
+  }
+
+  function moveTooltip(e) {
+    if (!tooltip) return;
+    tooltip.style.top = (e.pageY + 15) + "px";
+    tooltip.style.left = (e.pageX + 15) + "px";
+  }
+
+  function hideTooltip() {
+    if (tooltip) tooltip.style.display = "none";
+  }
+
+  document.querySelectorAll("label[data-desc] textarea").forEach(textarea => {
+    const ajustarAltura = (el) => {
+      el.style.height = "1em";
+      el.style.height = el.scrollHeight + "px";
+    };
+
+    ajustarAltura(textarea);
+
+    textarea.addEventListener("input", function () {
+      ajustarAltura(this);
+    });
+  });
+
+  document.querySelectorAll("label[data-desc]").forEach(label => {
+    label.addEventListener("mouseover", function (e) {
+      const desc = label.getAttribute("data-desc");
+      const campo = label.querySelector("span")?.textContent?.replace(":", "") || "";
+      showTooltip(desc, campo, e);
+    });
+
+    label.addEventListener("mousemove", moveTooltip);
+    label.addEventListener("mouseout", hideTooltip);
+  });
+</script>
+</body>
+</html>

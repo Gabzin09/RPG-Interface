@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <title>Atributos e Efeitos</title>
+  <link rel="stylesheet" href="style.css">
+<style>
+  * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+    body {
+      background-color: #00000000;
+      color: #ffffff;
+      font-family: 'VT323', monospace;
+      padding-top: 40px;
+      padding-bottom: 40px;
+      padding-left: 25px;
+      padding-right: 25px;
+      min-height: 100vh;
+      user-select: none;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .layout {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      width: 100%;
+      align-items: flex-start; 
+      justify-content: space-evenly;
+    }
+
+    .card {    
+      background: #0000008b;
+      border: 1px solid #ffffff;
+      padding: 25px;
+      width: 400px;
+    }
+
+    .card h2 {
+      background: #0000009f;
+      border-bottom: 1px solid #ffffff;
+      color: #ffffff;
+      font-family: 'VT323', monospace;
+      font-size: 30px;
+      text-align: center;
+      text-transform: uppercase;
+      padding: 10px;
+      margin-bottom: 15px;
+      user-select: none;
+    }
+
+.card-left, .card-right {
+  width: 475px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-center {
+  width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.section textarea {
+      background: #0000008b;
+      border: 1px solid #ffffff44;
+      color: #ffffff;
+      font-size: 25px;
+      padding: 6px 6px;
+      resize: none;
+      overflow: hidden;
+      width: 100%;
+      font-family: 'VT323', monospace;
+      border-bottom: 1px solid #ffffff;
+}
+
+.section-atributos label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 25px;
+  color: #ffffff;
+}
+
+.section-atributos input {
+  width: 150px;
+  font-size: 25px;
+  background: #111;
+  color: white;
+  border-bottom: 1px solid #ffffff;
+  text-align: center;
+}
+
+.grid-status {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.status-attr label {
+  font-size: 25px;
+  margin-bottom: 5px;
+  display: block;
+  color: #ffffff;
+}
+
+.status-attr input {
+  width: 100%;
+  padding: 6px;
+  background: #111;
+  border-bottom: 1px solid #ffffff;
+  color: white;
+  font-size: 25px;
+  text-align: center;
+  font-family: 'VT323', monospace;
+}
+
+.status-attr inpu:focus{
+  outline: none;
+  border-color: #ffffff;
+  border-radius: 0%;
+}
+
+.status-bar-group {
+  margin-bottom: 20px;
+}
+
+.status-bar-group label {
+  font-size: 25px;
+  margin-bottom: 5px;
+  display: block;
+  color: #ffffff;
+}
+
+.status-bar-group input[type="number"] {
+  width: 100%;
+  padding: 6px 10px;
+  background: #111;
+  color: #ffffff;
+  font-size: 25px;
+  font-family: 'VT323', monospace;
+  text-align: center;
+  border: 1px solid #ffffff66;
+  border-bottom: 1px solid #ffffff;
+  margin-top: 8px;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.status-bar-group input[type="number"]:focus {
+  outline: none;
+  border-color: #ffffff;
+}
+
+.bar-container {
+  position: relative;
+  height: 25px;
+  background: #222222;
+  border: 1px solid #ffffff44;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.bar-text {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  color: white;
+  text-align: center;
+  line-height: 20px;
+  font-size: 25px;
+  pointer-events: none;
+}
+
+.bar-life {
+  background: linear-gradient(90deg, #ff3c3c, #a60000);
+}
+
+.bar-mana {
+  background: linear-gradient(90deg, #3c80ff, #0033cc);
+}
+
+.bar-xp {
+  background: linear-gradient(90deg, #39ff14, #1f9900);
+}
+
+#tooltip {
+  position: absolute;
+  display: none;
+  background: #050505e6;
+  color: white;
+  border: 1px solid #ffffff88;
+  font-size: 25px;
+  padding: 10px;
+  max-width: 300px;
+  z-index: 999;
+}
+</style>
+</head>
+<body>
+  <div class="layout">
+    <!-- Coluna Esquerda: Buffs -->
+    <div class="card card-left">
+      <h2>Buffs</h2>
+      <div class="section section-buffs">
+        <!-- 10 campos -->
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+      </div>
+    </div>
+
+    <!-- Coluna Central: Atributos + Status -->
+    <div class="card-center">
+      <div class="card card-atributos">
+        <h2>Atributos</h2>
+        <form class="section section-atributos">
+          <label><span data-desc="Determina a força física e dano corpo a corpo.">Força:</span><input type="number" name="Força" value="0" /></label>
+          <label><span data-desc="Velocidade, reflexo e precisão em ações físicas.">Destreza:</span><input type="number" name="Destreza" value="0" /></label>
+          <label><span data-desc="Capacidade mágica, memória e raciocínio.">Inteligência:</span><input type="number" name="Inteligência" value="0" /></label>
+          <label><span data-desc="Energia vital e resistência física geral.">Vitalidade:</span><input type="number" name="Vitalidade" value="0" /></label>
+          <label><span data-desc="Capacidade de resistir a danos físicos e mágicos.">Resistência:</span><input type="number" name="Resistência" value="0" /></label>
+          <label><span data-desc="Habilidade de notar detalhes, armadilhas e inimigos ocultos.">Percepção:</span><input type="number" name="Percepção" value="0" /></label>
+          <label><span data-desc="Facilidade de comunicação, liderança e persuasão.">Carisma:</span><input type="number" name="Carisma" value="0" /></label>
+        </form>
+      </div>
+
+      <div class="card card-status">
+        <h2>Status</h2>
+        <div class="status-section">
+          <div class="grid-status">
+            <div class="status-attr">
+              <label for="nivel">Nível:</label>
+              <input type="number" id="nivel" min="1" max="100" value="1">
+            </div>
+            <div class="status-attr">
+              <label for="moedas">Moedas:</label>
+              <input type="number" id="moedas" min="0" value="0">
+            </div>
+            <div class="status-attr">
+              <label for="vida-max">Vida Max:</label>
+              <input type="number" id="vida-max" min="1" value="100">
+            </div>
+            <div class="status-attr">
+              <label for="mana-max">Mana Max:</label>
+              <input type="number" id="mana-max" min="0" value="50">
+            </div>
+          </div>
+
+          <div class="status-bar-group">
+            <label>Vida:</label>
+            <div class="bar-container" id="barra-vida">
+              <div class="bar-fill bar-life" id="vida-fill"></div>
+              <div class="bar-text" id="vida-text">0 / 0</div>
+            </div>
+            <input type="number" id="vida-atual" value="100" />
+          </div>
+
+          <div class="status-bar-group">
+            <label>Mana:</label>
+            <div class="bar-container" id="barra-mana">
+              <div class="bar-fill bar-mana" id="mana-fill"></div>
+              <div class="bar-text" id="mana-text">0 / 0</div>
+            </div>
+            <input type="number" id="mana-atual" value="50" />
+          </div>
+
+          <div class="status-bar-group">
+            <label>XP:</label>
+            <div class="bar-container" id="barra-xp">
+              <div class="bar-fill bar-xp" id="xp-fill"></div>
+              <div class="bar-text" id="xp-text">0 / 0</div>
+            </div>
+            <input type="number" id="xp" value="0" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coluna Direita: Debuffs -->
+    <div class="card card-right">
+      <h2>Debuffs</h2>
+      <div class="section section-debuffs">
+        <!-- 10 campos -->
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+        <label><textarea></textarea></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tooltip -->
+  <div id="tooltip"></div>
+  <script>
+const tooltip = document.getElementById("tooltip");
+
+function showTooltip(desc, campo, e) {
+  if (!desc || !tooltip) return;
+  tooltip.style.display = "block";
+  tooltip.innerHTML = `<strong>${campo}</strong><hr><div class="desc">${desc}</div>`;
+  moveTooltip(e);
+}
+
+function moveTooltip(e) {
+  if (!tooltip) return;
+  tooltip.style.top = (e.pageY + 15) + "px";
+  tooltip.style.left = (e.pageX + 15) + "px";
+}
+
+function hideTooltip() {
+  if (tooltip) tooltip.style.display = "none";
+}
+
+// Tooltips dinâmicos
+document.querySelectorAll(".section-atributos span[data-desc]").forEach(span => {
+  const desc = span.getAttribute("data-desc");
+  const campo = span.textContent;
+
+  span.addEventListener("mouseenter", (e) => showTooltip(desc, campo, e));
+  span.addEventListener("mousemove", moveTooltip);
+  span.addEventListener("mouseleave", hideTooltip);
+});
+
+// Elementos de entrada
+const nivelInput = document.getElementById('nivel');
+const xpInput = document.getElementById('xp');
+const vidaAtualInput = document.getElementById('vida-atual');
+const vidaMaxInput = document.getElementById('vida-max');
+const manaAtualInput = document.getElementById('mana-atual');
+const manaMaxInput = document.getElementById('mana-max');
+
+function xpParaProximoNivel(nivel) {
+  return 50 * nivel;
+}
+
+function atualizarNivel() {
+  let nivel = parseInt(nivelInput.value);
+  let xpAtual = parseInt(xpInput.value);
+
+  while (xpAtual >= xpParaProximoNivel(nivel)) {
+    xpAtual -= xpParaProximoNivel(nivel);
+    nivel++;
+  }
+
+  nivelInput.value = nivel;
+  xpInput.value = xpAtual;
+  return { nivel, xpAtual };
+}
+
+function atualizarBarras() {
+  const { nivel, xpAtual } = atualizarNivel();
+
+  const vidaAtual = parseInt(vidaAtualInput.value);
+  const vidaMax = parseInt(vidaMaxInput.value);
+  const manaAtual = parseInt(manaAtualInput.value);
+  const manaMax = parseInt(manaMaxInput.value);
+
+  const vidaPercent = vidaMax > 0 ? Math.min((vidaAtual / vidaMax) * 100, 100) : 0;
+  document.getElementById('vida-fill').style.width = vidaPercent + '%';
+  document.getElementById('vida-text').textContent = `${vidaAtual} / ${vidaMax}`;
+
+  const manaPercent = manaMax > 0 ? Math.min((manaAtual / manaMax) * 100, 100) : 0;
+  document.getElementById('mana-fill').style.width = manaPercent + '%';
+  document.getElementById('mana-text').textContent = `${manaAtual} / ${manaMax}`;
+
+  const xpMax = xpParaProximoNivel(nivel);
+  const xpPercent = xpMax > 0 ? Math.min((xpAtual / xpMax) * 100, 100) : 0;
+  document.getElementById('xp-fill').style.width = xpPercent + '%';
+  document.getElementById('xp-text').textContent = `${xpAtual} / ${xpMax}`;
+}
+
+// Disparar atualização ao alterar os inputs
+[nivelInput, xpInput, vidaAtualInput, vidaMaxInput, manaAtualInput, manaMaxInput]
+  .forEach(input => input.addEventListener('input', atualizarBarras));
+
+// Inicialização
+window.onload = atualizarBarras;
+  </script>
+</body>
+</html>

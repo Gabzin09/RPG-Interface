@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inventário</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+body {
+  background-color: #00000000;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  overflow-y: hidden;
+  user-select: none;
+  gap: 40px;
+}
+
+/* TÍTULOS */
+h2 {
+  background: #0000009f;
+  border-bottom: 1px solid #ffffff;
+  color: #ffffff;
+  font-family: 'VT323', monospace;
+  font-size: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 10px;
+  margin-bottom: 15px;
+  user-select: none;
+}
+
+/* PAINEL DE STATUS */
+.status-card {
+  width: 475px;
+  background: #0000008b;
+  border: 1px solid #ffffff;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-left: 20px;
+  padding-right:20px;
+  padding-bottom: 20px;
+}
+
+.status-info-list {
+  display: flex;
+  flex-direction: column;
+  font-family: 'VT323', monospace;
+  font-size: 25px;
+  gap: 5px;
+}
+
+.equipped-item-info {
+  background: #0000008b;
+  padding: 10px 12px;
+  border-left: 5px solid #ffffff99;
+  transition: background 0.3s;
+}
+
+.equipped-item-info strong {
+  color: #ffffff;
+  font-size: 25px;
+}
+
+.equipped-item-info small {
+  display: block;
+  color: #cccccc;
+  font-size: 20px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  word-break: break-word; 
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+}
+
+/* INVENTÁRIO */
+#inventory {
+  background: #0000008b;
+  border: 1px solid #ffffff;
+  width: 500px;
+  height: 100%; 
+  background-color: #0000008b;
+  padding-left: 25px;
+  padding-right:25px;
+  padding-bottom: 22px;
+}
+
+/* CATEGORIAS */
+#categories {
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+#categories button {
+  background: #ffffff00;
+  border: transparent;
+  border-radius: 100px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+#categories button img {
+  max-width: 75px;
+  max-height: 75px;
+  filter: brightness(1);
+  transition: filter 0.3s ease, transform 0.3s ease;
+  display: block;
+}
+
+#categories button:hover img {
+  filter: brightness(1.15);
+  transform: scale(1.1);
+    }
+
+#categories button.active img {
+  filter: brightness(1.25);
+  transform: scale(1.25);
+    }
+
+/* GRADE DE ITENS */
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 63px);
+  justify-content: center;
+  margin-top: 10px;
+  padding-left: 25px;
+  padding-right:25px;
+}
+
+/* ITEM */
+.item {
+  width: 60px;
+  height: 60px;
+  background: #0000008b;
+  position: relative;
+  cursor: grab;
+  border: 1px solid transparent;
+  transition: border-color 0.2s;
+  margin-bottom: 3px;
+}
+
+.item:hover {
+  border-color: #c6c6c6;
+}
+
+.item.equipped {
+  border: none;
+  cursor: pointer;
+}
+
+.item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.item[data-quantity]::after {
+  content: attr(data-quantity);
+  position: absolute;
+  bottom: 1px;
+  right: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  pointer-events: none;
+  font-family: 'VT323', monospace;
+}
+
+/* SLOTS DE EQUIPAMENTO */
+#equipped-card {
+  background: #0000008b;
+  border: 1px solid #ffffff;
+  width: 400px;
+  height: 100%;
+  padding-left: 20px;
+  padding-right:20px;
+  padding-bottom: 20px;
+    }
+
+#equipment-slots {
+  display: flex;
+  flex-direction: column;
+    }
+
+.slot-row {
+  display: flex;
+  justify-content: center;
+}
+
+.slot {
+  width: 100px;
+  height: 100px;
+  background: #0000008b;
+  border: 1px dashed #c1c1c17c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.3s;
+  margin: 5px;
+}
+
+.slot:hover {
+  border-color: #c6c6c6;
+}
+
+.slot img {
+  max-width: 95%;
+  max-height: 95%;
+  pointer-events: none;
+  user-select: none;
+  background: #0000004c;
+  z-index: 20;
+}
+
+.slot.equipped {
+  border: none;
+}
+
+.slot-icon {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* TOOLTIP */
+#tooltip {
+  position: absolute;
+  background: #000000ae;
+  color: #ffffff;
+  padding: 8px 12px;
+  font-family: 'VT323', monospace;
+  font-size: 25px;
+  pointer-events: none;
+  z-index: 9999;
+  display: none;
+  word-break: break-word; 
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+  width: 400px;
+}
+
+#tooltip strong {
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 30px;
+}
+
+#tooltip .desc {
+  line-height: 1;
+}
+
+/* FILTRO*/
+.filter-dropdown {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  user-select: none;
+}
+
+#filter-toggle {
+  background: #0000009f;
+  padding: 5px 10px;
+  color: white;
+  border: 2px solid #00000000;
+  font-family: 'VT323', monospace;
+  font-size: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: border-color 0.2s;
+  width: 125px;
+  justify-content: center;
+  margin-right: 10px;
+  margin-top: 5px;
+  letter-spacing: 1px;
+}
+
+#filter-toggle:hover {
+  border-color: #c6c6c6;
+}
+
+#filter-arrow {
+  display: inline-block;
+  transition: transform 0.1s ease;
+  margin-left: 3px;
+}
+
+#filter-arrow.open {
+  transform: rotateX(180deg);
+}
+
+.filter-options {
+  position: absolute;
+  top: 110%;
+  background: #0000008b;
+  border: 1px solid #2525258b;
+  display: flex;
+  flex-direction: column;
+  width: 145px;
+  z-index: 1000;
+  padding: 10px 10px;
+  backdrop-filter: blur(5px);
+}
+
+.filter-options label {
+  color: white;
+  font-family: 'VT323', monospace;
+  font-size: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  user-select: none;
+}
+
+.filter-options label input[type="checkbox"] {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.filter-options button {
+  margin-top: 8px;
+  background: #0000008b;
+  border: 1px solid #2525258b;
+  color: white;
+  font-family: 'VT323', monospace;
+  font-size: 25px;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, font-size 0.3s;
+}
+
+.filter-options button:hover {
+  border-color: #c6c6c6;
+  
+}
+
+.hidden {
+  display: none;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Painel de Status -->
+  <div id="equipped-info-card" class="status-card">
+    <h2 class="status-title">Status</h2>
+    <div id="equipped-info-list" class="status-info-list">
+      <!-- Informacoes dos itens equipados -->
+        </div>
+      </div>
+
+  <!-- Inventário -->
+  <div id="inventory">
+    <h2>Inventário</h2>
+<div id="categories">
+  <button class="active" onclick="showCategory('all')"><img src="IMGs/TodosC.png" alt="Todos" /></button>
+  <button onclick="showCategory('equipamentos')"><img src="IMGs/EquipamentoC.png" alt="Equipamentos" /></button>
+  <button onclick="showCategory('consumivel')"><img src="IMGs/ConsumivelC.png" alt="consumivel" /></button>
+  <button onclick="showCategory('pergaminho')"><img src="IMGs/PergaminhoC.png" alt="Livros e Pergaminhos" /></button>
+  <button onclick="showCategory('outros')"><img src="IMGs/OutrosC.png" alt="Outros" /></button>
+</div>
+
+    <hr>
+
+<!-- Filtro -->
+<div class="filter-dropdown">
+  <div id="filter-toggle" class="filter-toggle" onclick="toggleFilterOptions()">
+    FILTRO <span id="filter-arrow">▼</span>
+  </div>
+  <div id="filter-options" class="filter-options hidden">
+    <label><input type="checkbox" value="arma" onchange="updateFilter()">Armas</label>
+    <label><input type="checkbox" value="cabeca" onchange="updateFilter()">Cabeça</label>
+    <label><input type="checkbox" value="torco" onchange="updateFilter()">Torço</label>
+    <label><input type="checkbox" value="perna" onchange="updateFilter()">Pernas</label>
+    <label><input type="checkbox" value="pe" onchange="updateFilter()">Pés</label>
+    <label><input type="checkbox" value="amuleto" onchange="updateFilter()">Amuletos</label>
+    <button type="button" onclick="clearFilters()">Limpar</button>
+        </div>
+            </div>
+
+<div id="items" class="inventory-grid"></div>
+
+
+    <div id="items" class="inventory-grid"></div>
+  </div>
+
+  <!-- Slots de Equipamento -->
+  <div id="equipped-card">
+    <h2>Equipamento</h2>
+    <div id="equipment-slots">
+      <div class="slot-row">
+        <div class="slot" data-type="cabeca" data-img="IMGs/Capacete.png">
+          <img src="IMGs/Capacete.png" alt="slot de Capacete" class="slot-icon" />
+        </div>
+      </div>
+
+      <div class="slot-row">
+        <div class="slot" data-type="torco" data-img="IMGs/Peitoral.png">
+          <img src="IMGs/Peitoral.png" alt="slot de Torço" class="slot-icon" />
+        </div>
+      </div>
+
+      <div class="slot-row">
+        <div class="slot" data-type="mao1" data-img="IMGs/Espada.png">
+          <img src="IMGs/Espada.png" alt="slot de Mão 1" class="slot-icon" />
+        </div>
+        <div class="slot" data-type="perna" data-img="IMGs/Calça.png">
+          <img src="IMGs/Calça.png" alt="slot de Perna" class="slot-icon" />
+        </div>
+        <div class="slot" data-type="mao2" data-img="IMGs/Escudo.png">
+          <img src="IMGs/Escudo.png" alt="slot de Mão 2" class="slot-icon" />
+        </div>
+      </div>
+
+      <div class="slot-row">
+        <div class="slot" data-type="amuleto1" data-img="IMGs/Colar.png">
+          <img src="IMGs/Colar.png" alt="amuleto 1" class="slot-icon" />
+        </div>
+        <div class="slot" data-type="pe" data-img="IMGs/Botas.png">
+          <img src="IMGs/Botas.png" alt="slot de Pé" class="slot-icon" />
+        </div>
+        <div class="slot" data-type="amuleto2" data-img="IMGs/Anel.png">
+          <img src="IMGs/Anel.png" alt="amuleto 2" class="slot-icon" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tooltip -->
+  <div id="tooltip"></div>
+
+  <!-- Script -->
+<script>
+// === INVENTÁRIO E EQUIPAMENTO ===
+const allItems = [
+  { id: 1, name: "Capacete de Ferro", type: "cabeca", img: "IMGs/Capacete.png", desc: "Proteção básica para a cabeça.", quantity: 1 },
+  { id: 2, name: "Espada Curta", type: "arma", img: "IMGs/Espada.png", desc: "Uma lâmina leve e afiada.", quantity: 12 },
+  { id: 3, name: "Túnica de Couro", type: "torco", img: "IMGs/Peitoral.png", desc: "Oferece resistência leve.", quantity: 123 },
+  { id: 4, name: "Calça de Aventureiro", type: "perna", img: "IMGs/Calça.png", desc: "Ideal para longas viagens.", quantity: 1234 },
+  { id: 5, name: "Botas de Couro", type: "pe", img: "IMGs/Botas.png", desc: "Confortáveis e resistentes.", quantity: 1.234 },
+  { id: 6, name: "Amuleto da Sorte", type: "amuleto", img: "IMGs/Colar.png", desc: "Aumenta sua sorte em combate.", quantity: 12345 },
+  { id: 7, name: "Poção de Vida", type: "consumivel", img: "IMGs/Pocao.png", desc: "Restaura 50 de HP.", quantity: 12.345 },
+  { id: 8, name: "Livro de Feitiços", type: "livro", img: "IMGs/Livro.png", desc: "Contém magias arcanas.", quantity: 1 },
+  { id: 9, name: "Pergaminho de Fogo", type: "pergaminho", img: "IMGs/Pergaminho.png", desc: "Lança uma bola de fogo.", quantity: 3 },
+  { id: 10, name: "Chave Enferrujada", type: "outros", img: "IMGs/Chave.png", desc: "Abre um baú antigo.", quantity: 1 },
+
+  { id: 11, name: "Máscara de Madeira", type: "cabeca", img: "Mascara.png", desc: "Artefato tribal misterioso.", quantity: 1 },
+  { id: 12, name: "Machado Duplo", type: "arma", img: "Machado.png", desc: "Causa dano em área.", quantity: 1 },
+  { id: 13, name: "Peitoral de Aço", type: "torco", img: "PeitoralAco.png", desc: "Alta defesa física.", quantity: 1 },
+  { id: 14, name: "Calça de Placas", type: "perna", img: "CalcaPlacas.png", desc: "Pesada mas resistente.", quantity: 1 },
+  { id: 15, name: "Botas do Vento", type: "pe", img: "BotasVento.png", desc: "Aumenta velocidade.", quantity: 1 },
+  { id: 16, name: "Anel de Proteção", type: "amuleto", img: "IMGs/Anel.png", desc: "Reduz dano recebido.", quantity: 1 },
+  { id: 17, name: "Elixir de Mana", type: "consumivel", img: "Elixir.png", desc: "Recupera 30 MP.", quantity: 2 },
+  { id: 18, name: "Grimório Antigo", type: "livro", img: "Grimorio.png", desc: "Revela segredos esquecidos.", quantity: 1 },
+  { id: 19, name: "Pergaminho de Gelo", type: "pergaminho", img: "PergaminhoGelo.png", desc: "Congela o inimigo.", quantity: 1 },
+  { id: 20, name: "Chave de Prata", type: "outros", img: "ChavePrata.png", desc: "Usada em masmorras.", quantity: 1 },
+
+  { id: 21, name: "Capuz Sombrio", type: "cabeca", img: "Capuz.png", desc: "Ideal para furtividade.", quantity: 1 },
+  { id: 22, name: "Cajado de Carvalho", type: "arma", img: "Cajado.png", desc: "Canaliza energia mágica.", quantity: 1 },
+  { id: 23, name: "Armadura de Escamas", type: "torco", img: "Escamas.png", desc: "Inspirada em dragões.", quantity: 1 },
+  { id: 24, name: "Calça de Couro Negro", type: "perna", img: "CalcaCouro.png", desc: "Ajuda no disfarce.", quantity: 1 },
+  { id: 25, name: "Sapatos de Seda", type: "pe", img: "SapatosSeda.png", desc: "Muito leves e macios.", quantity: 1 },
+  { id: 26, name: "Amuleto da Lua", type: "amuleto", img: "Lua.png", desc: "Protege durante a noite.", quantity: 1 },
+  { id: 27, name: "Poção de Veneno", type: "consumivel", img: "Veneno.png", desc: "Causa dano ao inimigo.", quantity: 3 },
+  { id: 28, name: "Manual do Guerreiro", type: "livro", img: "Manual.png", desc: "Técnicas de combate.", quantity: 1 },
+  { id: 29, name: "Pergaminho de Cura", type: "pergaminho", img: "Cura.png", desc: "Cura ferimentos leves.", quantity: 2 },
+  { id: 30, name: "Chave Dourada", type: "outros", img: "ChaveOuro.png", desc: "Abre o cofre real.", quantity: 1 },
+
+  { id: 31, name: "Máscara Assombrada", type: "cabeca", img: "MascaraAssombro.png", desc: "Dizem que é amaldiçoada.", quantity: 1 },
+  { id: 32, name: "Adaga Venenosa", type: "arma", img: "Adaga.png", desc: "Causa dano contínuo.", quantity: 1 },
+  { id: 33, name: "Couraça Flamejante", type: "torco", img: "CouracaFogo.png", desc: "Emana calor intenso.", quantity: 1 },
+  { id: 34, name: "Calça do Feiticeiro", type: "perna", img: "CalcaFeitico.png", desc: "Reforça magia.", quantity: 1 },
+  { id: 35, name: "Botas Rúnicas", type: "pe", img: "BotasRunas.png", desc: "Ativam portais mágicos.", quantity: 1 },
+  { id: 36, name: "Anel das Sombras", type: "amuleto", img: "AnelSombras.png", desc: "Oculta sua presença.", quantity: 1 },
+  { id: 37, name: "Frasco de Sangue", type: "consumivel", img: "Sangue.png", desc: "Regenera lentamente.", quantity: 2 },
+  { id: 38, name: "Livro do Necromante", type: "livro", img: "Necromante.png", desc: "Comando sobre os mortos.", quantity: 1 },
+  { id: 39, name: "Pergaminho de Teleporte", type: "pergaminho", img: "Teleporte.png", desc: "Leva ao local seguro.", quantity: 1 },
+  { id: 40, name: "Chave Misteriosa", type: "outros", img: "ChaveMisteriosa.png", desc: "Você não sabe o que ela abre.", quantity: 1 },
+
+  { id: 41, name: "Elmo de Titânio", type: "cabeca", img: "ElmoTitanio.png", desc: "Quase indestrutível.", quantity: 1 },
+  { id: 42, name: "Escudo de Ferro", type: "arma", img: "Escudo.png", desc: "Super defesa", quantity: 1 },
+  { id: 43, name: "Túnica de Magia:", type: "torco", img: "TunicaMagica.png", desc: "Amplifvdhebjwnkjcfrvtgbyhnujhbygvtfcrdexsdcrftvgybhujygtfrcdexszwxdcrftvgybhujhygtfhgfdsica magias.", quantity: 1 },
+  { id: 44, name: "Calça Camuflada", type: "perna", img: "Camuflada.png", desc: "Boa para florestas.", quantity: 1 },
+  { id: 45, name: "Botas de Aço", type: "pe", img: "BotasAco.png", desc: "Muito pesadas e resistentes.", quantity: 1 },
+  { id: 46, name: "Amuleto Solar", type: "amuleto", img: "Sol.png", desc: "Brilha sob o sol.", quantity: 1 },
+  { id: 47, name: "Tônico de Força", type: "consumivel", img: "Tonico.png", desc: "Aumenta ataque temporariamente.", quantity: 1 },
+  { id: 48, name: "Enciclopédia Arcana", type: "livro", img: "Enciclopedia.png", desc: "Conhecimento arcano avançado.", quantity: 1 },
+  { id: 49, name: "Pergaminho de Invisibilidade", type: "pergaminho", img: "Invisibilidade.png", desc: "Oculta o usuário por 30s.", quantity: 1 },
+  { id: 50, name: "Chave de Cristal", type: "outros", img: "ChaveCristal.png", desc: "Desbloqueia portais mágicos.", quantity: 1 }
+];
+
+let items = [...allItems];
+const equippedItems = {
+  mao1: null,
+  mao2: null,
+  cabeca: null,
+  torco: null,
+  perna: null,
+  pe: null,
+  amuleto1: null,
+  amuleto2: null,
+};
+
+const itemContainer = document.getElementById("items");
+const tooltip = document.getElementById("tooltip");
+const slots = document.querySelectorAll(".slot");
+let draggedItem = null;
+let currentCategory = "all";
+
+function showCategory(cat) {
+  currentCategory = cat;
+  showItems(cat);
+
+  // Remover 'active' de todos os botões
+  document.querySelectorAll('#categories button').forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  // Adicionar 'active' ao botão clicado
+  const categoryButtons = document.querySelectorAll('#categories button');
+  categoryButtons.forEach(btn => {
+    const imgAlt = btn.querySelector('img')?.alt?.toLowerCase();
+    if (
+      (cat === 'all' && imgAlt === 'todos') ||
+      (cat === 'pergaminho' && imgAlt === 'livros e pergaminhos') ||
+      imgAlt === cat
+    ) {
+      btn.classList.add('active');
+    }
+  });
+}
+
+function showItems(filter = null) {
+  itemContainer.innerHTML = "";
+  let filteredItems;
+
+  if (filter === "all" || (activeFilters.size === 0 && !filter)) {
+    filteredItems = items;
+  } else if (filter === "equipamentos") {
+    const tiposEquipamentos = ["arma", "cabeca", "torco", "perna", "pe", "amuleto"];
+    filteredItems = items.filter(i => tiposEquipamentos.includes(i.type));
+  } else if (filter === "pergaminho") {
+    filteredItems = items.filter(i => i.type === "livro" || i.type === "pergaminho");
+  } else if (filter) {
+    filteredItems = items.filter(i => i.type === filter);
+  } else {
+    const filtersToUse = Array.from(activeFilters);
+    filteredItems = items.filter(i => filtersToUse.includes(i.type));
+  }
+
+  filteredItems.forEach(item => {
+    if (Object.values(equippedItems).includes(item.id)) return;
+    const el = document.createElement("div");
+    el.className = "item";
+    el.setAttribute("draggable", "true");
+    el.dataset.id = item.id;
+    el.dataset.type = item.type;
+    if (item.quantity > 1) el.dataset.quantity = item.quantity;
+    if (item.img) el.innerHTML = `<img src="${item.img}" alt="${item.name}" onerror="this.style.display='none'">`;
+
+    el.addEventListener("dragstart", e => {
+      draggedItem = item;
+      e.dataTransfer.setData("text/plain", item.id);
+      e.dataTransfer.effectAllowed = "move";
+    });
+
+    el.addEventListener("click", () => tryEquipItem(item));
+    el.addEventListener("mouseenter", e => showTooltip(item, e));
+    el.addEventListener("mousemove", e => moveTooltip(e));
+    el.addEventListener("mouseleave", hideTooltip);
+
+    itemContainer.appendChild(el);
+  });
+}
+
+function showTooltip(item, e) {
+  tooltip.style.display = "block";
+  tooltip.innerHTML = `<strong>${item.name}</strong> <hr> <div class="desc">${item.desc}</div>`;
+  moveTooltip(e);
+}
+
+function moveTooltip(e) {
+  tooltip.style.top = e.pageY + 15 + "px";
+  tooltip.style.left = e.pageX + 15 + "px";
+}
+
+function hideTooltip() {
+  tooltip.style.display = "none";
+}
+
+function showEquipped() {
+  slots.forEach(slot => {
+    const type = slot.dataset.type;
+    const itemId = equippedItems[type];
+    slot.innerHTML = "";
+    if (itemId) {
+      const item = allItems.find(i => i.id === itemId);
+      if (item) {
+        const img = document.createElement("img");
+        img.src = item.img;
+        img.alt = item.name;
+        img.title = item.name;
+        img.className = "slot-icon";
+        slot.appendChild(img);
+        slot.classList.add("equipped");
+      }
+    } else {
+      const baseImg = slot.dataset.img;
+      if (baseImg) {
+        const img = document.createElement("img");
+        img.src = baseImg;
+        img.className = "slot-icon";
+        slot.appendChild(img);
+      }
+      slot.classList.remove("equipped");
+    }
+  });
+}
+
+function tryEquipItem(item) {
+  const slotMap = {
+    arma: ["mao1", "mao2"],
+    cabeca: ["cabeca"],
+    torco: ["torco"],
+    perna: ["perna"],
+    pe: ["pe"],
+    amuleto: ["amuleto1", "amuleto2"]
+  };
+
+  const slotsDisponiveis = slotMap[item.type];
+  if (!slotsDisponiveis) return alert("Esse item não pode ser equipado.");
+  if (Object.values(equippedItems).includes(item.id)) return alert("Item já equipado.");
+
+  for (const slot of slotsDisponiveis) {
+    if (!equippedItems[slot]) return equip(slot, item);
+  }
+
+  if (confirm("Todos os slots estão ocupados. Deseja substituir o primeiro?")) {
+    equip(slotsDisponiveis[0], item);
+  }
+}
+
+function equip(slotName, item) {
+  const antigo = equippedItems[slotName];
+  if (antigo) items.push(allItems.find(i => i.id === antigo));
+  items = items.filter(i => i.id !== item.id);
+  equippedItems[slotName] = item.id;
+  showItems(currentCategory);
+  showEquipped();
+  updateEquippedInfo();
+}
+
+slots.forEach(slot => {
+  slot.addEventListener("click", () => {
+    const type = slot.dataset.type;
+    const id = equippedItems[type];
+    if (id) {
+      const item = allItems.find(i => i.id === id);
+      if (item) {
+        items.push(item);
+        equippedItems[type] = null;
+        showItems(currentCategory);
+        showEquipped();
+        updateEquippedInfo();
+      }
+    }
+  });
+
+  slot.addEventListener("dragstart", e => {
+    const id = equippedItems[slot.dataset.type];
+    if (id) {
+      const item = allItems.find(i => i.id === id);
+      draggedItem = item;
+      slot.setAttribute("draggable", "true");
+      e.dataTransfer.setData("text/plain", id);
+    }
+  });
+
+  slot.addEventListener("dragend", () => slot.removeAttribute("draggable"));
+  slot.addEventListener("dragover", e => e.preventDefault());
+
+  slot.addEventListener("drop", e => {
+    e.preventDefault();
+    if (!draggedItem) return;
+    const slotType = slot.dataset.type;
+    const map = {
+      arma: ["mao1", "mao2"],
+      cabeca: ["cabeca"],
+      torco: ["torco"],
+      perna: ["perna"],
+      pe: ["pe"],
+      amuleto: ["amuleto1", "amuleto2"]
+    };
+    const valid = map[draggedItem.type];
+    if (!valid || !valid.includes(slotType)) return alert("Slot inválido.");
+    equip(slotType, draggedItem);
+    draggedItem = null;
+  });
+});
+
+itemContainer.addEventListener("dragover", e => e.preventDefault());
+itemContainer.addEventListener("drop", e => {
+  e.preventDefault();
+  if (!draggedItem) return;
+  for (const [slot, id] of Object.entries(equippedItems)) {
+    if (id === draggedItem.id) {
+      equippedItems[slot] = null;
+      if (!items.find(i => i.id === draggedItem.id)) items.push(draggedItem);
+      showItems(currentCategory);
+      showEquipped();
+      updateEquippedInfo();
+      draggedItem = null;
+      break;
+    }
+  }
+});
+
+function updateEquippedInfo() {
+  const container = document.getElementById("equipped-info-list");
+  container.innerHTML = "";
+  Object.entries(equippedItems).forEach(([slot, id]) => {
+    const item = allItems.find(i => i.id === id);
+    if (item) {
+      const el = document.createElement("div");
+      el.className = "equipped-item-info";
+      el.innerHTML = `<strong>${formatSlotName(slot)}</strong><br>${item.name}<br><small>${item.desc}</small>`;
+      container.appendChild(el);
+    }
+  });
+}
+
+function formatSlotName(slot) {
+  return slot
+    .replace("mao1", "Mão 1")
+    .replace("mao2", "Mão 2")
+    .replace("cabeca", "Cabeça")
+    .replace("torco", "Torço")
+    .replace("perna", "Perna")
+    .replace("pe", "Pé")
+    .replace("amuleto1", "Amuleto 1")
+    .replace("amuleto2", "Amuleto 2");
+}
+
+// === FILTRO ===
+const filterToggle = document.getElementById("filter-toggle");
+const filterOptions = document.getElementById("filter-options");
+const filterArrow = document.getElementById("filter-arrow");
+let activeFilters = new Set();
+
+function toggleFilterOptions() {
+  filterOptions.classList.toggle("hidden");
+  filterArrow.classList.toggle("open");
+}
+
+function updateFilter() {
+  const checkboxes = filterOptions.querySelectorAll("input[type='checkbox']");
+  activeFilters.clear();
+  checkboxes.forEach(cb => {
+    if (cb.checked) activeFilters.add(cb.value);
+  });
+
+  if (activeFilters.size === 0) {
+    showItems("all");
+  } else {
+    showItems(); // usa activeFilters
+  }
+}
+
+function clearFilters() {
+  const checkboxes = filterOptions.querySelectorAll("input[type='checkbox']");
+  checkboxes.forEach(cb => cb.checked = false);
+  activeFilters.clear();
+  showItems("all");
+}
+
+// === INICIALIZAÇÃO ===
+showCategory("all");
+showEquipped();
+updateEquippedInfo();
+</script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interface de RPG</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'VT323', monospace;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      width: 100%;
+      background: linear-gradient(135deg, #0e0e0e, #1c1c1c);
+    }
+
+    header {
+      background: #101010cc;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid #ffffff;
+      height: 65px;
+    }
+
+    h1 {
+      color: #ffffff;
+      font-size: 3rem;
+      letter-spacing: 2px;
+      text-align: center;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      background-color: #121212cc;
+      border-bottom: 1px solid #ffffff;
+      width: 100%;
+    }
+
+    nav button {
+      background: none;
+      border: none;
+      padding: 12px 20px;
+      color: #ffffff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: 0.2s ease-in-out;
+      text-align: center;
+      min-width: 120px;
+      border-bottom: 1px solid transparent;
+      font-family: 'VT323', monospace;
+    }
+
+    nav button:hover,
+    nav button.active {
+      background-color: #191919;
+      border-bottom: 1px solid #ffffff;
+      color: #ffffff;
+    }
+
+    main {
+      flex: 1;
+      padding: 0;
+      width: 100%;
+    }
+
+    .painel {
+      background-image: url('fundo.gif');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      font-family: sans-serif;
+      display: none;
+    }
+
+    .painel.active {
+      display: block;
+    }
+
+    .atributo {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.25rem 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #0f0f0f;
+      border-top: 1px solid #ffffff;
+      color: #ffffff;
+      font-size: 1.5rem;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Menu - [nome do jogador]</h1>
+  </header>
+
+  <nav id="menu">
+    <button class="active" onclick="trocarAba('perfil')">Perfil</button>
+    <button onclick="trocarAba('atributos')">Atributos</button>
+    <button onclick="trocarAba('inventario')">Inventário</button>
+    <button onclick="trocarAba('habilidades')">Habilidades</button>
+    <button onclick="trocarAba('missoes')">Missões</button>
+  </nav>
+
+  <main>
+    <div id="perfil" class="painel active"></div>
+    <div id="atributos" class="painel"></div>
+    <div id="inventario" class="painel"></div>
+    <div id="habilidades" class="painel"></div>
+    <div id="missoes" class="painel"></div>
+  </main>
+
+  <footer>
+    Interface de RPG © 2025
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById("menu").classList.toggle("show");
+    }
+
+    function trocarAba(abaId) {
+      const botoes = document.querySelectorAll("nav button");
+      const paineis = document.querySelectorAll(".painel");
+
+      botoes.forEach(botao => botao.classList.remove("active"));
+      paineis.forEach(painel => painel.classList.remove("active"));
+
+      document.querySelector(`[onclick="trocarAba('${abaId}')"]`).classList.add("active");
+      document.getElementById(abaId).classList.add("active");
+
+      document.getElementById("menu").classList.remove("show");
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const preloadIframes = [
+        { id: 'perfil', src: 'HUDs/Perfil HUD.html', height: '5000px' },
+        { id: 'atributos', src: 'HUDs/Atributos HUD.html', height: '5000px' },
+        { id: 'inventario', src: 'HUDs/Inventario HUD.html', height: '5000px' },
+        { id: 'habilidades', src: 'HUDs/Habilidades HUD.html', height: '5000px' },
+        { id: 'missoes', src: 'HUDs/Missoes HUD.html', height: '5000px' }
+      ];
+
+      preloadIframes.forEach(({ id, src, height }) => {
+        const container = document.getElementById(id);
+        const iframe = document.createElement('iframe');
+        iframe.src = src;
+        iframe.style.border = 'none';
+        iframe.width = '100%';
+        iframe.height = height;
+        iframe.loading = 'eager';
+        container.appendChild(iframe);
+      });
+    });
+  </script>
+</body>
+</html>

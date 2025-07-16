@@ -1,0 +1,73 @@
+/* Estilo base para todos os cards */
+    .card7 {    
+      background: #0000008b;
+      border: 1px solid #ffffff;
+      padding-left: 25px;
+      padding-right: 25px;
+      padding-bottom: 25px;
+      width: 950px;
+      height: auto;
+    }
+
+    .layout3 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      width: 1000px;
+      align-items: flex-start; /* 👈 Impede o stretch vertical */
+      justify-content: space-evenly;
+      background: #0000008b;
+      padding-bottom: 25px;
+      height: auto;
+    }
+
+    .card7 h2 {
+      background: #0000009f;
+      border-bottom: 1px solid #ffffff;
+      color: #ffffff;
+      font-family: 'VT323', monospace;
+      font-size: 30px;
+      text-align: center;
+      text-transform: uppercase;
+      padding: 10px;
+      margin-bottom: 15px;
+      user-select: none;
+      display: none;
+    }
+
+    /* Estilo das seções nos cards */
+    .section7 label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card7 label span {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(1px, 1px, 1px, 1px);
+        white-space: nowrap;
+    }
+
+    /* Textareas */
+    .section7 label textarea {
+      background: #0000008b;
+      border: 1px solid #ffffff44;
+      color: #ffffff;
+      font-size: 30px;
+      padding: 6px 6px;
+      resize: none;
+      min-height: 1em;
+      overflow: hidden;
+      text-align: center;
+      width: 65%;
+      font-family: 'VT323', monospace;
+      border-bottom: 1px solid #ffffff;
+    }
+
+    .section7 label textarea:focus {
+      outline: 1px solid #ffffff;
+      background-color: #000000ba;
+    }
