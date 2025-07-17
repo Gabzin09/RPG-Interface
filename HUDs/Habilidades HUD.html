@@ -35,7 +35,7 @@ body {
       padding-right: 25px;
       padding-bottom: 25px;
       width: 1250px;
-      height: 1350px;
+      height: 1600px;
 }
 
 /* Título com estilo HUD */
@@ -133,7 +133,7 @@ body {
   border: 1px solid #ffffff77;
   border-radius: 7px;
   width: 400px;
-  height: 600px;
+  height: 650px;
   padding: 12px;
   flex-shrink: 0;
   display: flex;
@@ -149,7 +149,7 @@ body {
 
 .card-habilidade img {
   width: 100%;
-  max-height: 350px;
+  max-height: 300px;
   object-fit: contain;
   margin-bottom: 15px;
   background: transparent;
@@ -194,6 +194,21 @@ body {
   color: #d0d0d0;
   border-color: #c00000;
 }
+
+#skillDesc {
+  width: 100%;
+  height: 150px;
+  line-height: 1;
+}
+
+#contadorDesc {
+  font-size: 25px;
+  color: #ffffff;
+  text-align: right;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
   </style>
 </head>
 <body>
@@ -205,7 +220,8 @@ body {
         <input type="text" id="skillName" placeholder="Nome" required />
         <input type="text" id="skillTipo" placeholder="Tipo (ex: Magia)" />
       </div>
-      <textarea id="skillDesc" placeholder="Descrição" rows="2" required></textarea>
+        <textarea id="skillDesc" placeholder="Descrição" rows="12" maxlength="500" required></textarea>
+        <div id="contadorDesc" style="text-align: right; font-size: 35px; color: #ffffff;">0 / 500 caracteres</div>
       <div class="form-bloco">
         <input type="text" id="skillCusto" placeholder="Custo (ex: 10 MP)" />
         <input type="file" id="skillImage" accept="image/*" />
@@ -324,6 +340,15 @@ document.getElementById("formHabilidade").addEventListener("submit", async (e) =
 
 // Inicializar
 window.addEventListener("DOMContentLoaded", renderizarCartas);
+
+// Contador de caracteres da descrição
+const textareaDesc = document.getElementById("skillDesc");
+const contador = document.getElementById("contadorDesc");
+
+textareaDesc.addEventListener("input", () => {
+  contador.textContent = `${textareaDesc.value.length} / 500 caracteres`;
+});
+
   </script>
 </body>
 </html>
